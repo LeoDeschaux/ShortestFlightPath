@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using myEngine;
 
-using ImGuiNET;
 
 using Num = System.Numerics;
 
@@ -24,11 +23,27 @@ namespace zzMathVisu
         //FIELDS
         Text t;
         PopUpCoord c;
+        PropertiesMenu propertiesMenu;
 
         //CONSTRUCTOR
         public Scene_EarthMap()
         {
-            Settings.BACKGROUND_COLOR = Color.Pink; 
+            Settings.BACKGROUND_COLOR = Color.Pink;
+
+            Viewport viewPort = new Viewport();
+            viewPort.X = 0;
+            viewPort.Y = 0;
+            viewPort.Width = Settings.SCREEN_WIDTH - 300;
+            viewPort.Height = Settings.SCREEN_HEIGHT;
+            viewPort.MinDepth = 0;
+            viewPort.MaxDepth = 1;
+
+            Engine.renderingEngine.viewPort = viewPort;
+
+            propertiesMenu = new PropertiesMenu();
+
+            camera.transform.position.X += 150;
+            Console.WriteLine(camera.transform.position);
 
             Sprite s = new Sprite();
             //s.texture = Ressources.Load<Texture2D>("myContent/2D/Utm-zones");
@@ -37,6 +52,23 @@ namespace zzMathVisu
             s.transform.position = new Vector2(0, 0);
             s.isVisible = true;
             s.drawOrder = -1000;
+
+            Sprite mapClone = new Sprite();
+            //s.texture = Ressources.Load<Texture2D>("myContent/2D/Utm-zones");
+            mapClone.texture = Ressources.Load<Texture2D>("myContent/2D/Map");
+            mapClone.dimension = new Vector2(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
+            mapClone.transform.position = new Vector2(mapClone.dimension.X, 0);
+            mapClone.isVisible = true;
+            mapClone.drawOrder = -1000;
+
+            Sprite mapClone2 = new Sprite();
+            //s.texture = Ressources.Load<Texture2D>("myContent/2D/Utm-zones");
+            mapClone2.texture = Ressources.Load<Texture2D>("myContent/2D/Map");
+            mapClone2.dimension = new Vector2(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
+            mapClone2.transform.position = new Vector2(0, mapClone.dimension.Y);
+            mapClone2.isVisible = true;
+            mapClone2.drawOrder = -1000;
+            mapClone2.transform.rotation = -180;
 
             camControl.isActive = true;
 
@@ -64,47 +96,12 @@ namespace zzMathVisu
         public override void DrawGUI()
         {
             c.DrawPopUp();
-            DrawRightPanel();
+            propertiesMenu.DrawRightPanel();
         }
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
-        }
 
-        float osef = 0;
-
-        public void DrawRightPanel()
-        { 
-            ImGui.SetNextWindowSize(new Num.Vector2(300, Engine.game.Window.ClientBounds.Height));
-            ImGui.SetNextWindowPos(new Num.Vector2(Engine.game.Window.ClientBounds.Width - 300, 0));
-
-            ImGui.GetStyle().WindowRounding = 0.0f;
-            ImGui.GetStyle().ChildRounding = 0.0f;
-            ImGui.GetStyle().FrameRounding = 0.0f;
-            ImGui.GetStyle().GrabRounding = 0.0f;
-            ImGui.GetStyle().PopupRounding = 0.0f;
-            ImGui.GetStyle().ScrollbarRounding = 0.0f;
-
-            ImGuiWindowFlags window_flags = 0;
-
-            window_flags |= ImGuiWindowFlags.NoResize;
-            window_flags |= ImGuiWindowFlags.NoCollapse;
-            window_flags |= ImGuiWindowFlags.NoMove;
-
-            ImGui.SetNextWindowBgAlpha(1);
-
-            ImGui.Begin("WINDOW", window_flags);
-
-            ImGui.Text("Properties");
-
-            ImGui.SliderFloat("Slider", ref osef, 0, 100);
-
-            if (ImGui.Button("Set Marker"))
-            {
-                Console.WriteLine("PRESSED");
-            }
-
-            ImGui.End();
         }
     }
 }

@@ -116,8 +116,11 @@ namespace zzMathVisu
                     //camera.transform.position += ((deltaMouse - myEngine.Mouse.position.ToVector2()) * speedMouse);
                     Vector2 newRot = ((deltaMouse - myEngine.Mouse.position.ToVector2()) * speedMouse);
 
+                    if(camRotX - newRot.Y < 80 && camRotX - newRot.Y > -80)
+                        camRotX -= newRot.Y;
+
                     camRotY += newRot.X;
-                    camRotX -= newRot.Y;
+                    
 
                     deltaMouse = myEngine.Mouse.position.ToVector2();
                 }
@@ -215,7 +218,7 @@ namespace zzMathVisu
             ImGui.Text("Camera Properties");
             ImGui.SliderFloat("Vertical Rotation", ref camRotX, -360f, 360f);
             ImGui.SliderFloat("Horizontal Rotation", ref camRotY, -360f, 360f);
-            ImGui.SliderFloat("Distance", ref camDist, 0.5f, 5f);
+            ImGui.SliderFloat("Distance", ref camDist, 0.3f, 5f);
 
             if (ImGui.Button("Set Marker"))
             {

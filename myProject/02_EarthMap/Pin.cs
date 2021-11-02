@@ -6,41 +6,75 @@ using myEngine;
 
 namespace zzMathVisu.myProject._02_EarthMap
 {
+    public class PinManager
+    {
+        private static PinManager instance;
+
+        public static PinManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new PinManager();
+
+                return instance;
+            }
+        }
+
+        private static List<Pin> pins;
+
+        private PinManager()
+        {
+            pins = new List<Pin>();
+        }
+
+        public void AddPin(Pin pin)
+        {
+            pins.Add(pin);
+        }
+
+        public List<Pin> GetPins()
+        {
+            return pins;
+        }
+    }
+
     public class Pin
     {
-        Button b;
-
+        public Button button;
         private Coord c;
 
         public Pin(String name, Coord c)
         {
+            PinManager.Instance.AddPin(this);
+
             this.c = c;
 
-            b = new Button();
-            b.transform.position = MVUtil.ConvertCoordToVector(c.latitude, c.longitude);
-            b.text.transform.position = b.transform.position; //* new Vector2(1f, -1f);
-            b.sprite.transform.position = b.transform.position;
+            button = new Button();
+            button.transform.position = MVUtil.ConvertCoordToVector(c.latitude, c.longitude);
+            button.text.transform.position = button.transform.position; //* new Vector2(1f, -1f);
+            button.sprite.transform.position = button.transform.position;
 
-            b.sprite.dimension = new Vector2(10, 10);
-            b.sprite.color = Color.White;
+            button.sprite.dimension = new Vector2(10, 10);
+            button.sprite.color = Color.White;
 
-            b.defaultColor = Color.Red;
-            b.hoverColor = Color.Red;
+            button.defaultColor = Color.Red;
+            button.hoverColor = Color.Red;
 
-            b.sprite.drawOrder = 100;
+            button.sprite.drawOrder = 100;
 
-            b.text.useScreenCoord = false;
-            b.text.color = Color.White;
+            button.text.useScreenCoord = false;
+            button.text.color = Color.White;
 
-            float osefX = b.text.transform.position.X;
-            float osefY = b.text.transform.position.Y;
+            float osefX = button.text.transform.position.X;
+            float osefY = button.text.transform.position.Y;
 
-            b.text.transform.position = new Vector2(osefX, osefY);
-            b.sprite.transform.position = new Vector2(osefX, osefY);
+            button.text.transform.position = new Vector2(osefX, osefY);
+            button.sprite.transform.position = new Vector2(osefX, osefY);
 
-            b.text.s = name;
+            button.text.s = name;
 
-            b.text.drawOrder = b.sprite.drawOrder + 1;
+            button.text.drawOrder = button.sprite.drawOrder + 1;
 
             /*
             Sprite s = new Sprite();
@@ -51,29 +85,30 @@ namespace zzMathVisu.myProject._02_EarthMap
             s.drawOrder = 100;
             */
 
-            defaultSpriteSize = b.sprite.dimension;
+            defaultSpriteSize = button.sprite.dimension;
 
-            b.onHoverEnter = new Event(ScaleUp);
-            b.onHoverExit = new Event(ScaleDown);
+            button.onHoverEnter = new Event(ScaleUp);
+            button.onHoverExit = new Event(ScaleDown);
 
-            b.onButtonPressed = new Event(OnPinPressed);
+            button.onButtonPressed = new Event(OnPinPressed);
         }
 
         private Vector2 defaultSpriteSize; 
 
         private void ScaleUp()
         {
-            b.sprite.dimension = defaultSpriteSize * 2;
+            defaultSpriteSize = button.sprite.dimension;
+            button.sprite.dimension *= 2;
         }
 
         private void ScaleDown()
         {
-            b.sprite.dimension = defaultSpriteSize;
+            button.sprite.dimension = defaultSpriteSize;
         }
 
         private void OnPinPressed()
         {
-            Console.WriteLine(b.text.s + ": " + this.c.ToString());
+            Console.WriteLine(button.text.s + ": " + this.c.ToString());
         }
     }
 }
