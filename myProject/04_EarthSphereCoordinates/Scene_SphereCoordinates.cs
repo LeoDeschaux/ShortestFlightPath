@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace zzMathVisu
 {
-    public class Scene_SphereCoordinates : IScene
+    public class Scene_SphereCoordinates : MathScene
     {
         //FIELDS
         Camera3D camera3D;
@@ -30,16 +30,6 @@ namespace zzMathVisu
             Engine.game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
             Settings.BACKGROUND_COLOR = Color.AliceBlue;
-
-            Viewport viewPort = new Viewport();
-            viewPort.X = 0;
-            viewPort.Y = 0;
-            viewPort.Width = Settings.SCREEN_WIDTH - 300;
-            viewPort.Height = Settings.SCREEN_HEIGHT;
-            viewPort.MinDepth = 0;
-            viewPort.MaxDepth = 1;
-
-            Engine.renderingEngine.viewPort = viewPort;
 
             camera3D = new Camera3D(Engine.game, new Vector3(0, 0, -4), Vector3.Zero, 10);
             camera3D.isActive = false;
@@ -179,6 +169,8 @@ namespace zzMathVisu
 
         public override void DrawGUI()
         {
+            base.DrawGUI();
+
             ImGui.SetNextWindowSize(new Num.Vector2(300, Settings.SCREEN_HEIGHT));
             ImGui.SetNextWindowPos(new Num.Vector2((Settings.SCREEN_WIDTH - 300), 0));
 

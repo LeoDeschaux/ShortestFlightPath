@@ -40,7 +40,7 @@ namespace zzMathVisu.myProject._02_EarthMap
             //ImGui.SetNextWindowSize(new Num.Vector2(300, Engine.game.Window.ClientBounds.Height));
             //ImGui.SetNextWindowPos(new Num.Vector2(Engine.game.Window.ClientBounds.Width - 300, 0));
 
-            ImGui.SetNextWindowSize(new Num.Vector2(300, Settings.SCREEN_WIDTH));
+            ImGui.SetNextWindowSize(new Num.Vector2(300, Settings.SCREEN_HEIGHT - 300));
             ImGui.SetNextWindowPos(new Num.Vector2(Settings.SCREEN_WIDTH - 300, 0));
 
             ImGui.GetStyle().WindowRounding = 0.0f;
@@ -123,26 +123,15 @@ namespace zzMathVisu.myProject._02_EarthMap
 
             if (ImGui.Button("Delete all pins"))
             {
-                //ImGui.End();
-                //RenderingEngine.imGuiRenderer.AfterLayout();
-                SceneManager.ReloadScene();
-                return;
+                //SceneManager.ReloadScene();
+                //return;
+                DeleteAllPins();
             }
 
-            /*
-            if(showPins)
+            if (ImGui.Button("Spawn default pins"))
             {
-                if (ImGui.Checkbox("show text", ref showPins))
-                {
-                    Console.WriteLine("TEST");
-                }
+                SpawnDefaultPins();
             }
-
-            if (ImGui.Button("Set Marker"))
-            {
-                Console.WriteLine("PRESSED");
-            }
-            */
 
             ImGui.End();
         }
@@ -227,7 +216,26 @@ namespace zzMathVisu.myProject._02_EarthMap
 
         private void SetCameraAtPos(Vector2 pos)
         {
-            SceneManager.currentScene.camera.transform.position = pos + new Vector2(150, 0);
+            SceneManager.currentScene.camera.transform.position = pos + new Vector2(0, 0);
+        }
+
+        private void DeleteAllPins()
+        {
+            List<Pin> pins = PinManager.Instance.GetPins();
+
+            foreach (Pin p in pins)
+            {
+                p.Destroy();
+            }
+        }
+
+        private void SpawnDefaultPins()
+        {
+            MVUtil.SpawnPinAtCoords("Paris", Coord.Paris);
+            MVUtil.SpawnPinAtCoords("Tokyo", Coord.Tokyo);
+            MVUtil.SpawnPinAtCoords("Le Cap", Coord.LeCap);
+            MVUtil.SpawnPinAtCoords("Mexico", Coord.Mexico);
+            MVUtil.SpawnPinAtCoords("Puntas Arenas", Coord.PuntasArenas);
         }
     }
 }

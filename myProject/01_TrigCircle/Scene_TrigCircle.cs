@@ -8,7 +8,7 @@ using myEngine;
 
 namespace zzMathVisu
 {
-    public class Scene_TrigCircle : IScene
+    public class Scene_TrigCircle : MathScene
     {
         //FIELDS
         Text t;
@@ -17,8 +17,6 @@ namespace zzMathVisu
         public Scene_TrigCircle()
         {
             Settings.BACKGROUND_COLOR = Color.Black;
-
-           
 
             this.camControl.isActive = true;
 
@@ -79,8 +77,5 @@ namespace zzMathVisu
 
             angle += 1f * Time.deltaTime;
         }
-
-        
-        
     }
 }

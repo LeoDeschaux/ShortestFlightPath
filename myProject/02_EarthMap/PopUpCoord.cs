@@ -62,7 +62,16 @@ namespace zzMathVisu
             ImGui.Begin("WINDOW", window_flags);
             */
 
-            ImGui.Begin("NAME");
+            ImGuiWindowFlags window_flags = 0;
+
+            window_flags |= ImGuiWindowFlags.NoResize;
+            window_flags |= ImGuiWindowFlags.NoCollapse;
+            window_flags |= ImGuiWindowFlags.NoMove;
+
+            ImGui.SetNextWindowSize(new Num.Vector2(300, 300));
+            ImGui.SetNextWindowPos(new Num.Vector2(Settings.SCREEN_WIDTH - 300, Settings.SCREEN_HEIGHT - 300));
+
+            ImGui.Begin("NAME", window_flags);
 
             ImGui.Text("Choose your marker position : ");
 
@@ -76,7 +85,6 @@ namespace zzMathVisu
             {
                 Console.WriteLine("PRESSED");
 
-                //Scene_EarthMap.SpawnPinAtCoords(System.Text.Encoding.UTF8.GetString(_textBuffer, 0, _textBuffer.Length), new Coord(latitude, longitude));
                 MVUtil.SpawnPinAtCoords(name, new Coord(latitude, longitude));
             }
 

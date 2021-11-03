@@ -9,7 +9,7 @@ using zzMathVisu.myProject;
 
 namespace zzMathVisu
 {
-    public class Scene_EarthTravel : IScene
+    public class Scene_EarthTravel : MathScene
     {
         Text t;
 

@@ -39,7 +39,7 @@ namespace zzMathVisu.myProject._02_EarthMap
         }
     }
 
-    public class Pin
+    public class Pin : GameObject
     {
         public Button button;
         private Coord c;
@@ -109,6 +109,13 @@ namespace zzMathVisu.myProject._02_EarthMap
         private void OnPinPressed()
         {
             Console.WriteLine(button.text.s + ": " + this.c.ToString());
+        }
+
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            button.Destroy();
         }
     }
 }

@@ -7,7 +7,7 @@ using myEngine;
 
 namespace zzMathVisu
 {
-    public class Scene_EarthGlobe : IScene
+    public class Scene_EarthGlobe : MathScene
     {
         //FIELDS
         Camera3D camera;
@@ -38,7 +38,6 @@ namespace zzMathVisu
         public override void Update()
         {
             globe.transform3D.rotation.Y += 45 * Time.deltaTime;
-            Console.WriteLine(camera.Rotation.Y);
         }
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
