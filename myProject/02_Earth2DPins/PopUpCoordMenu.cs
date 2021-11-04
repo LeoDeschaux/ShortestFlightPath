@@ -11,11 +11,8 @@ using zzMathVisu.myProject._02_EarthMap;
 
 namespace zzMathVisu
 {
-    public class PopUpCoord : GameObject
+    public class PopUpCoordMenu : GameObject
     {
-        //FIELDS
-        ImGuiRenderer renderer;
-
         //UI VALUES
         private static float latitude;
         private static float longitude;
@@ -23,11 +20,8 @@ namespace zzMathVisu
         private static string name;
 
         //CONSTRUCTOR
-        public PopUpCoord()
+        public PopUpCoordMenu()
         {
-            renderer = new ImGuiRenderer(Engine.game);
-            renderer.RebuildFontAtlas();
-
             name = "Default_Name";
         }
 
@@ -35,13 +29,12 @@ namespace zzMathVisu
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
-            //DrawPopUp();
             DrawSimpleShape.DrawRullerFree(MVUtil.ConvertCoordToVector(-latitude, longitude), matrix);
         }
 
         private byte[] _textBuffer = new byte[100];
 
-        public void DrawPopUp()
+        public void DrawGUI()
         {
             /*
             ImGui.SetNextWindowSize(new Num.Vector2(300, 300));

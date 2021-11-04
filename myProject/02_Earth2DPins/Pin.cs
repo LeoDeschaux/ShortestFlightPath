@@ -55,7 +55,7 @@ namespace zzMathVisu.myProject._02_EarthMap
             button.text.transform.position = button.transform.position; //* new Vector2(1f, -1f);
             button.sprite.transform.position = button.transform.position;
 
-            button.sprite.dimension = new Vector2(10, 10);
+            button.sprite.dimension = new Vector2(30, 30);
             button.sprite.color = Color.White;
 
             button.defaultColor = Color.Red;

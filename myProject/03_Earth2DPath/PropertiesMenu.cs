@@ -4,10 +4,10 @@ using myEngine;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using zzMathVisu.myProject._02_EarthMap;
 using Num = System.Numerics;
 
-namespace zzMathVisu.myProject._02_EarthMap
+namespace zzMathVisu.myProject._03_Earth2DPath
 {
     public class PropertiesMenu
     {
@@ -21,7 +21,7 @@ namespace zzMathVisu.myProject._02_EarthMap
         Num.Vector3 textColor = new Num.Vector3(0, 0, 0);
 
         //PINS SPRITE
-        int spriteSize = 10;
+        int spriteSize = 30;
         Num.Vector3 spriteColor = new Num.Vector3(255, 0, 0);
 
         //GRID
@@ -35,7 +35,7 @@ namespace zzMathVisu.myProject._02_EarthMap
 
         }
 
-        public void DrawRightPanel()
+        public void DrawGUI()
         {
             //ImGui.SetNextWindowSize(new Num.Vector2(300, Engine.game.Window.ClientBounds.Height));
             //ImGui.SetNextWindowPos(new Num.Vector2(Engine.game.Window.ClientBounds.Width - 300, 0));
@@ -66,11 +66,11 @@ namespace zzMathVisu.myProject._02_EarthMap
             {
                 SetPinsVisible(showPins);
             }
-            if(ImGui.Checkbox("Show Text", ref showText))
+            if (ImGui.Checkbox("Show Text", ref showText))
             {
                 SetTextVisible(showText);
             }
-            if(ImGui.Checkbox("Show Sprites", ref showSprites))
+            if (ImGui.Checkbox("Show Sprites", ref showSprites))
             {
                 SetSpritesVisible(showSprites);
             }
@@ -78,12 +78,12 @@ namespace zzMathVisu.myProject._02_EarthMap
             ImGui.Separator();
 
             ImGui.Text("Text Properties");
-            if(ImGui.InputInt("Font Size", ref fontSize))
+            if (ImGui.InputInt("Font Size", ref fontSize))
             {
                 SetFontSize(fontSize);
             }
 
-            if(ImGui.ColorEdit3("Text Color", ref textColor))
+            if (ImGui.ColorEdit3("Text Color", ref textColor))
             {
                 SetTextColor(new Color(textColor.X, textColor.Y, textColor.Z));
             }
@@ -91,12 +91,12 @@ namespace zzMathVisu.myProject._02_EarthMap
             ImGui.Separator();
 
             ImGui.Text("Sprites Properties");
-            if(ImGui.InputInt("Sprite Size", ref spriteSize))
+            if (ImGui.InputInt("Sprite Size", ref spriteSize))
             {
                 SetSpriteSize(spriteSize);
             }
 
-            if(ImGui.ColorEdit3("Sprite Color", ref spriteColor))
+            if (ImGui.ColorEdit3("Sprite Color", ref spriteColor))
             {
                 SetSpriteColor(new Color(spriteColor.X, spriteColor.Y, spriteColor.Z));
             }
@@ -113,6 +113,19 @@ namespace zzMathVisu.myProject._02_EarthMap
             //grid size ?
             //grid cells ?
             //grid color ?
+
+            ImGui.Separator();
+
+            ImGui.Text("Camera Propsertie");
+
+            ImGui.DragFloat("Camera Horizontal", ref SceneManager.currentScene.camera.transform.position.X);
+
+            /*
+            if (ImGui.DragFloat("Camera Horizontal", ref SceneManager.currentScene.camera.transform.position.X))
+            {
+                SetCameraAtPos()
+            }
+            */
 
             ImGui.Separator();
 

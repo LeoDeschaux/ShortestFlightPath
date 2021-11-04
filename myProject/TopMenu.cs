@@ -37,12 +37,12 @@ namespace zzMathVisu
                     }
                     if (ImGui.MenuItem("02 - Earth 2D - Pins"))
                     {
-                        SceneManager.ChangeScene(typeof(Scene_EarthMap));
+                        SceneManager.ChangeScene(typeof(Scene_Earth2DPins));
                         return;
                     }
                     if (ImGui.MenuItem("03 - Earth 2D - Path"))
                     {
-                        SceneManager.ChangeScene(typeof(Scene_EarthTravel));
+                        SceneManager.ChangeScene(typeof(Scene_Earth2DPath));
                         return;
                     }
                     if (ImGui.MenuItem("04 - Earth 3D - Sphere Coordinates"))
