@@ -2,7 +2,7 @@
  
 > :warning: **This project is a work in progress** and is not meant to be used as it is
 
-ShortestFlightPath a University Project.
+ShortestFlightPath a University Project where the main goal is to calculate the shortest path between to point on a sphere using coordinates.
 
 ***
 
