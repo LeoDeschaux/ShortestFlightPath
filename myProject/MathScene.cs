@@ -23,7 +23,6 @@ namespace zzMathVisu
             viewPort.Height = Settings.SCREEN_HEIGHT - 19;
             viewPort.MinDepth = 0;
             viewPort.MaxDepth = 1;
-
             Engine.renderingEngine.viewPort = viewPort;
 
             sceneName = new Text();

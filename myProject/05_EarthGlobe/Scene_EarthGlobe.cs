@@ -42,9 +42,7 @@ namespace zzMathVisu
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
-
             //s.DrawTriangle(Vector3.Zero, 5, Color.Red);
-
             s.DrawLine(Vector3.Zero, new Vector3(0, 2, 0), 100, Color.Red);
         }
     }

@@ -9,6 +9,7 @@ using ImGuiNET;
 
 using Num = System.Numerics;
 using Microsoft.Xna.Framework.Input;
+using zzMathVisu.myProject._04_EarthSphereCoordinates;
 
 namespace zzMathVisu
 {
@@ -16,9 +17,10 @@ namespace zzMathVisu
     {
         //FIELDS
         Camera3D camera3D;
-
         Object3D globe;
-        Object3D cursor;
+        Cursor3D cursor;
+
+        CameraController controller;
 
         Text t;
 
@@ -33,6 +35,8 @@ namespace zzMathVisu
 
             camera3D = new Camera3D(Engine.game, new Vector3(0, 0, -4), Vector3.Zero, 10);
             camera3D.isActive = false;
+
+            controller = new CameraController(camera3D);
 
             Floor f = new Floor(Engine.game.GraphicsDevice, camera3D, 4, 4, 1);
             f.transform3D.position = new Vector3(0, -3, 0);
@@ -50,81 +54,39 @@ namespace zzMathVisu
 
             globe.drawOrder = 10;
             
-            cursor = new Object3D(camera3D);
-            cursor.model = Ressources.Load<Model>("myContent/3D/sphere");
+            cursor = new Cursor3D(camera3D);
 
-            cursor.transform3D.position = new Vector3(0, 0, 0);
-            cursor.transform3D.scale = new Vector3(0.02f, 0.02f, 0.02f);
+            Vector2 a = new Vector2(90, 0);
+            Vector2 b = new Vector2(45, -45);
 
-            cursor.effect.DiffuseColor = Color.Red.ToVector3();
-            cursor.effect.Alpha = 1f;
-            cursor.drawOrder = 0;
+            SpawnCursor(a.X, a.Y, Color.Red);
+            SpawnCursor(b.X, b.Y, Color.Red);
 
-            Object3D.GlobalEffect.FogEnabled = true;
-            Object3D.GlobalEffect.FogColor = Color.AliceBlue.ToVector3();
-            Object3D.GlobalEffect.FogStart = 0f;
-            Object3D.GlobalEffect.FogEnd = 20f;
+            /*
+            float x = 90 - 45 / 2;
+            float y = 0 - 45 / 2;
+            SpawnCursor(x, y, Color.Yellow);
+            */
 
-            Object3D.GlobalEffect.LightingEnabled = true;
-            Object3D.GlobalEffect.DirectionalLight0.DiffuseColor = new Vector3(1, 1, 1);
-            Object3D.GlobalEffect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  
-            Object3D.GlobalEffect.DirectionalLight0.SpecularColor = new Vector3(1, 1, 1);
-
-            Object3D.GlobalEffect.AmbientLightColor = Color.AliceBlue.ToVector3();
+            SpawnTrajectory(a, b, 30);
 
             t = new Text();
-
-            initPos = camera3D.Position;
         }
 
-        Vector3 initPos;
+        private void SpawnTrajectory(Vector2 start, Vector2 end, float amount)
+        {
 
-        Vector2 deltaMouse;
-
-        float speedMouse = 0.5f;
+            for(int i = 0; i < amount; i++)
+            {
+                Vector2 pos = start - ((end / (amount+1)) * (1 + i));
+                SpawnCursor(pos.X, -pos.Y, Color.Green);
+            }
+        }
 
         //METHODS
         public override void Update()
         {
             SetCoordPos();
-
-            if (Input.GetKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
-            {
-                //camera.isActive = camera.isActive == true ? false : true;
-            }
-
-            //MOUSE CAM CONTROLE
-            if(myEngine.Mouse.position.X <= 980)
-            {
-                if (Input.GetMouseDown(MouseButtons.Left))
-                {
-                    deltaMouse = myEngine.Mouse.position.ToVector2();
-                }
-
-                if (Input.GetMouse(MouseButtons.Left))
-                {
-                    //camera.transform.position += ((deltaMouse - myEngine.Mouse.position.ToVector2()) * speedMouse);
-                    Vector2 newRot = ((deltaMouse - myEngine.Mouse.position.ToVector2()) * speedMouse);
-
-                    if(camRotX - newRot.Y < 80 && camRotX - newRot.Y > -80)
-                        camRotX -= newRot.Y;
-
-                    camRotY += newRot.X;
-                    
-
-                    deltaMouse = myEngine.Mouse.position.ToVector2();
-                }
-            }
-            
-
-            //CAM
-            Vector3 targetPos = Vector3.Zero;
-
-            camera3D.cameraLookAt = targetPos;
-
-            camera3D.Position = targetPos + Vector3.Transform(initPos - targetPos,
-                Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), MathHelper.ToRadians(camRotX)) *
-                Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), MathHelper.ToRadians(camRotY))) * (camDist);
         }
 
         private Vector3 RotateAround(float latitude, float longitude)
@@ -146,15 +108,11 @@ namespace zzMathVisu
         private void SetCoordPos()
         {
             t.s = "" + Math.Floor(-latitude) + ", " + Math.Floor(longitude);
-
+            
             cursor.transform3D.position = RotateAround(latitude, longitude) * 0.8f * radius;
-
-            cursor.transform3D.scale = Vector3.One * 0.01f * scale;
-
+            cursor.transform3D.scale = Vector3.One * 0.02f * scale;
             globe.transform3D.rotation = new Vector3(globe.transform3D.rotation.X, sphereRotation, globe.transform3D.rotation.Z);
         }
-
-        private string name = "osef";
 
         private float scale = 2f;
         private float radius = 1.300f;
@@ -162,10 +120,6 @@ namespace zzMathVisu
         float latitude;
         float longitude;
         float sphereRotation = 83f;
-
-        float camRotX = 0;
-        float camRotY = 0;
-        float camDist = 1;
 
         public override void DrawGUI()
         {
@@ -208,21 +162,44 @@ namespace zzMathVisu
             ImGui.SliderFloat("Earth Rotation", ref sphereRotation, -180f, 180f);
 
             ImGui.Text("Camera Properties");
-            ImGui.SliderFloat("Vertical Rotation", ref camRotX, -360f, 360f);
-            ImGui.SliderFloat("Horizontal Rotation", ref camRotY, -360f, 360f);
-            ImGui.SliderFloat("Distance", ref camDist, 0.3f, 5f);
+            ImGui.SliderFloat("Vertical Rotation", ref controller.camRotX, -80, 80);
+            ImGui.SliderFloat("Horizontal Rotation", ref controller.camRotY, -360f, 360f);
+            ImGui.SliderFloat("Distance", ref controller.camDist, 0.3f, 3f);
 
-            if (ImGui.Button("Set Marker"))
+            //CURSOR SPAWNNER
+            if (ImGui.Button("Spawn Cursor"))
             {
-                Console.WriteLine("PRESSED");
-                SetCoordPos();
+                SpawnCursor(latitude, longitude, Color.Red);
             }
 
             ImGui.End();
         }
 
+        private void SpawnCursor(float latitude, float longitude, Color color)
+        {
+            Cursor3D c = new Cursor3D(camera3D);
+            c.transform3D.position = RotateAround(latitude, longitude) * 0.8f * radius;
+            c.transform3D.scale = Vector3.One * 0.01f * scale;
+            c.effect.DiffuseColor = color.ToVector3();
+        }
+
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
+        }
+
+        private void SetScene()
+        {
+            Object3D.GlobalEffect.FogEnabled = true;
+            Object3D.GlobalEffect.FogColor = Color.AliceBlue.ToVector3();
+            Object3D.GlobalEffect.FogStart = 0f;
+            Object3D.GlobalEffect.FogEnd = 20f;
+
+            Object3D.GlobalEffect.LightingEnabled = true;
+            Object3D.GlobalEffect.DirectionalLight0.DiffuseColor = new Vector3(1, 1, 1);
+            Object3D.GlobalEffect.DirectionalLight0.Direction = new Vector3(1, 0, 0);
+            Object3D.GlobalEffect.DirectionalLight0.SpecularColor = new Vector3(1, 1, 1);
+
+            Object3D.GlobalEffect.AmbientLightColor = Color.AliceBlue.ToVector3();
         }
     }
 }

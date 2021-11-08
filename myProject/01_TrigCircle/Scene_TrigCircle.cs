@@ -18,7 +18,16 @@ namespace zzMathVisu
         {
             Settings.BACKGROUND_COLOR = Color.Black;
 
-            this.camControl.isActive = true;
+            this.camControl.isActive = false;
+
+            Viewport viewPort = new Viewport();
+            viewPort.X = 0;
+            viewPort.Y = 19;
+            viewPort.Width = Settings.SCREEN_WIDTH;
+            viewPort.Height = Settings.SCREEN_HEIGHT - 19;
+            viewPort.MinDepth = 0;
+            viewPort.MaxDepth = 1;
+            Engine.renderingEngine.viewPort = viewPort;
 
             t = new Text();
             t.color = Color.White;
@@ -31,6 +40,9 @@ namespace zzMathVisu
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
+
+            DrawSimpleShape.DrawRuller(Settings.GetScreenCenter() - new Vector2(0,19/2));
+
             Shapes s = new Shapes(Engine.game);
 
             s.Begin(this.camera);
@@ -67,13 +79,13 @@ namespace zzMathVisu
             string s1 = string.Format("{0:0.##}", (float)Math.Cos(-angle));
             string s2 = string.Format("{0:0.##}", (float)Math.Sin(angle));
 
-            string s3 = string.Format("{0:0.##}", pos.X);
-            string s4 = string.Format("{0:0.##}", pos.Y);
+            string s3 = string.Format("{0:0}", pos.X);
+            string s4 = string.Format("{0:0}", pos.Y);
 
             t.s = 
                 "Cos: " + s1 +
                 "\nSin: " + s2 +
-                "\npos: " + pos.X + ", " + pos.Y;
+                "\npos: " + s3 + ", " + s4;
 
             angle += 1f * Time.deltaTime;
         }

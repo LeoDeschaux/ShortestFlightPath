@@ -74,7 +74,7 @@ namespace zzMathVisu.myProject._02_EarthMap
 
             button.text.s = name;
 
-            button.text.drawOrder = button.sprite.drawOrder + 1;
+            button.text.drawOrder = button.sprite.drawOrder + 10000;
 
             /*
             Sprite s = new Sprite();

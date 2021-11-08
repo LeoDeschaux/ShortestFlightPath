@@ -30,7 +30,6 @@ namespace zzMathVisu
             //pathMenu = new PathMenu();
 
             Sprite s = new Sprite();
-            //s.texture = Ressources.Load<Texture2D>("myContent/2D/Utm-zones");
             s.texture = Ressources.Load<Texture2D>("myContent/2D/Map");
             s.dimension = new Vector2(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
             s.transform.position = new Vector2(0, 0);
@@ -42,8 +41,6 @@ namespace zzMathVisu
             camera.ZoomOut(0);
 
             //Spawn Cities
-            //MVUtil.SpawnPinAtCoords("Paris", Coord.Paris);
-            //MVUtil.SpawnPinAtCoords("Mexico", Coord.Mexico);
 
             Marker a = new Marker("MarkerA");
             a.latitude = -70;
@@ -60,6 +57,32 @@ namespace zzMathVisu
         {
             //DrawTrajectory(Coord.Paris, Coord.Mexico, Color.Red);
             //DrawTrajectory(new Coord(0, 0), new Coord(45, 45), 2, Color.LightGreen);
+            DrawTrajectory(new Vector2(150, 150), new Vector2(400, 400), 5, Color.Red);
+        }
+
+        private void DrawTrajectory(Vector2 start, Vector2 end, int segmentation, Color color)
+        {
+            Vector2[] points =
+            {
+                new Vector2(0, 0),
+                new Vector2(100, 100),
+                new Vector2(200, 300),
+                new Vector2(600, 400),
+                new Vector2(200, -200),
+            };
+
+            DrawPoints(points);
+        }
+
+        private void DrawPoints(Vector2[] points)
+        {
+            for (int i = 0; i < points.Length-1; i++)
+            {
+                Vector2 a = points[i];
+                Vector2 b = points[(i + 1)];
+
+                DrawSimpleShape.DrawLine(a, b, Color.Red, matrix: SceneManager.currentScene.camera.transformMatrix);
+            }
         }
 
         public override void DrawGUI()
@@ -68,7 +91,7 @@ namespace zzMathVisu
             //propertiesMenu.DrawGUI();
             //pathMenu.DrawGUI();
 
-            ImGui.SetNextWindowSize(new Num.Vector2(300, Settings.SCREEN_HEIGHT - 300));
+            ImGui.SetNextWindowSize(new Num.Vector2(300, Settings.SCREEN_HEIGHT));
             ImGui.SetNextWindowPos(new Num.Vector2(Settings.SCREEN_WIDTH - 300, 0));
 
             ImGui.GetStyle().WindowRounding = 0.0f;
@@ -100,7 +123,5 @@ namespace zzMathVisu
 
             ImGui.End();
         }
-
-        
     }
 }
