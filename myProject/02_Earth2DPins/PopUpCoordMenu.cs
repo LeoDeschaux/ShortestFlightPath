@@ -26,6 +26,9 @@ namespace zzMathVisu
         }
 
         //METHODS
+        public override void Update()
+        {
+        }
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {

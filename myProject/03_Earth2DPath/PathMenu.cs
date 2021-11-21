@@ -55,8 +55,8 @@ namespace zzMathVisu.myProject._03_Earth2DPath
             Vector2 marker1Pos = MVUtil.ConvertCoordToVector(-marker1.latitude, marker1.longitude);
             Vector2 marker2Pos = MVUtil.ConvertCoordToVector(-marker2.latitude, marker2.longitude);
 
-            Trajectory.DrawCrossHaitAtPos(marker1Pos, Color.Red, matrix);
-            Trajectory.DrawCrossHaitAtPos(marker2Pos, Color.Red, matrix);
+            Trajectory.DrawCrosshairAtPos(marker1Pos, Color.Red, matrix);
+            Trajectory.DrawCrosshairAtPos(marker2Pos, Color.Red, matrix);
         }
 
         private byte[] _textBuffer = new byte[100];

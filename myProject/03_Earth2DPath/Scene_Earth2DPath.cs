@@ -22,6 +22,8 @@ namespace zzMathVisu
 
         Trajectory t;
 
+        Text coordsCenter;
+
         public Scene_Earth2DPath()
         {
             Settings.BACKGROUND_COLOR = Color.LightGoldenrodYellow;
@@ -51,38 +53,83 @@ namespace zzMathVisu
             b.longitude = 30;
 
             t = new Trajectory(a, b);
+
+            coordsCenter = new Text();
+            coordsCenter.color = Color.Black;
+            coordsCenter.transform.position = new Vector2(0, 720/2);
         }
 
         public override void Draw(SpriteBatch sprite, Matrix matrix)
         {
-            //DrawTrajectory(Coord.Paris, Coord.Mexico, Color.Red);
-            //DrawTrajectory(new Coord(0, 0), new Coord(45, 45), 2, Color.LightGreen);
-            DrawTrajectory(new Vector2(150, 150), new Vector2(400, 400), 5, Color.Red);
+            //DrawTrajectory(new Vector2(-150, 150), new Vector2(400, -200), 5, Color.Red);
+            
+            DrawTrajectory(MVUtil.ConvertCoordToVector(t.a.latitude, t.a.longitude), MVUtil.ConvertCoordToVector(t.b.latitude, t.b.longitude), 5, Color.Red);
         }
 
         private void DrawTrajectory(Vector2 start, Vector2 end, int segmentation, Color color)
         {
-            Vector2[] points =
+            /*
+            for (int i = 0; i < segmentation; i++)
             {
-                new Vector2(0, 0),
-                new Vector2(100, 100),
-                new Vector2(200, 300),
-                new Vector2(600, 400),
-                new Vector2(200, -200),
-            };
+                Vector2 point1 = start + (((end - start) / segmentation) * i);
+                Vector2 point2 = start + (((end - start) / segmentation) * (i + 1));
 
-            DrawPoints(points);
+                Color c = new Color((float)(i) / (float)segmentation, (float)(i) / (float)segmentation, (float)(i) / (float)segmentation);
+                DrawSimpleShape.DrawLine(point1, point2, c, thickness: 5, matrix: SceneManager.currentScene.camera.transformMatrix);
+            }
+            */
+
+            /*
+            Vector2 point1 = start;
+            Vector2 point2 = end;
+            Vector2 center = MVUtil.ConvertVectorToCoord(point1) + (MVUtil.ConvertVectorToCoord(point2) - MVUtil.ConvertVectorToCoord(point1) /2);
+
+            center = MVUtil.ConvertCoordToVector(center.X, center.Y);
+            */
+
+            //DrawCapConstant(MVUtil.ConvertVectorToCoord(start), MVUtil.ConvertVectorToCoord(end));
+
+            //DrawSimpleShape.DrawLine(point1, center, Color.Black, thickness: 5, matrix: SceneManager.currentScene.camera.transformMatrix);
+            //DrawSimpleShape.DrawLine(center, point2, Color.Red, thickness: 5, matrix: SceneManager.currentScene.camera.transformMatrix);
         }
 
-        private void DrawPoints(Vector2[] points)
+        private void DrawTrajectoryOld(Vector2 start, Vector2 end, int segmentation, Color color)
         {
-            for (int i = 0; i < points.Length-1; i++)
+            for (int i = 0; i < segmentation; i++)
             {
-                Vector2 a = points[i];
-                Vector2 b = points[(i + 1)];
+                Vector2 point1 = start + (((end - start) / segmentation) * i);
+                Vector2 point2 = start + (((end - start) / segmentation) * (i + 1));
 
-                DrawSimpleShape.DrawLine(a, b, Color.Red, matrix: SceneManager.currentScene.camera.transformMatrix);
+                Color c = new Color((float)(i) / (float)segmentation, (float)(i) / (float)segmentation, (float)(i) / (float)segmentation);
+                DrawSimpleShape.DrawLine(point1, point2, c, thickness: 5, matrix: SceneManager.currentScene.camera.transformMatrix);
             }
+        }
+
+        private void DrawCapConstant(Vector2 start, Vector2 end)
+        {
+            Vector2 point1 = new Vector2(MathHelper.ToRadians(start.X), MathHelper.ToRadians(start.Y));
+            Vector2 point2 = new Vector2(MathHelper.ToRadians(end.X), MathHelper.ToRadians(end.Y));
+
+            double distanceB = Math.Acos(Math.Sin(point1.X) * Math.Sin(point2.X) +
+                Math.Cos(point1.X) * Math.Cos(point2.X) *
+                Math.Cos(point1.Y - point2.Y));
+
+            double v = ( Math.Sin(point2.X) - Math.Sin(point1.X) * Math.Cos(distanceB) ) /
+                (Math.Cos(point1.X) * Math.Sin(distanceB));
+
+            double a = Math.Acos(v);
+
+            float q = (float)Math.PI / (float)(1.852 * 60 * 180);
+
+            float capLength = 10;
+
+            float newLat = point1.X + (float)Math.Cos(a) * capLength * q * (720/2);
+            float newLong = point1.Y + ((float)(Math.Sin(a) / Math.Cos(point1.X)) * capLength * q * (1280/2));
+
+            Vector2 newPos = MVUtil.ConvertCoordToVector(MathHelper.ToDegrees(newLat), MathHelper.ToDegrees(newLong));
+            coordsCenter.s = newPos.ToString();
+
+            Trajectory.DrawCrosshairAtPos(newPos, Color.Red, SceneManager.currentScene.camera.transformMatrix);
         }
 
         public override void DrawGUI()

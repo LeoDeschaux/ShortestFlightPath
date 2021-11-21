@@ -62,12 +62,6 @@ namespace zzMathVisu
             SpawnCursor(a.X, a.Y, Color.Red);
             SpawnCursor(b.X, b.Y, Color.Red);
 
-            /*
-            float x = 90 - 45 / 2;
-            float y = 0 - 45 / 2;
-            SpawnCursor(x, y, Color.Yellow);
-            */
-
             SpawnTrajectory(a, b, 30);
 
             t = new Text();
@@ -75,7 +69,6 @@ namespace zzMathVisu
 
         private void SpawnTrajectory(Vector2 start, Vector2 end, float amount)
         {
-
             for(int i = 0; i < amount; i++)
             {
                 Vector2 pos = start - ((end / (amount+1)) * (1 + i));

@@ -30,6 +30,12 @@ namespace zzMathVisu
 
                 if (ImGui.BeginMenu("Change Scene"))
                 {
+                    if (ImGui.MenuItem("00 - First Page"))
+                    {
+                        SceneManager.ChangeScene(typeof(Scene_FirstPage));
+                        return;
+                    }
+
                     if (ImGui.MenuItem("01 - Trig Circle"))
                     {
                         SceneManager.ChangeScene(typeof(Scene_TrigCircle));
@@ -50,14 +56,15 @@ namespace zzMathVisu
                         SceneManager.ChangeScene(typeof(Scene_SphereCoordinates));
                         return;
                     }
+                    /*
                     if (ImGui.MenuItem("05 - Earth 3D - Paths"))
                     {
                         SceneManager.ChangeScene(typeof(Scene_EarthGlobe));
                         return;
                     }
+                    */
                     ImGui.EndMenu();
                 }
-
                 ImGui.EndMainMenuBar();
             }
         }

@@ -42,14 +42,14 @@ namespace zzMathVisu.myProject._03_Earth2DPath
             Vector2 posA = MVUtil.ConvertCoordToVector(a.latitude, a.longitude);
             Vector2 posB = MVUtil.ConvertCoordToVector(b.latitude, b.longitude);
 
-            Trajectory.DrawCrossHaitAtPos(posA, Color.Red, SceneManager.currentScene.camera.transformMatrix);
-            Trajectory.DrawCrossHaitAtPos(posB, Color.LightGreen, SceneManager.currentScene.camera.transformMatrix);
+            Trajectory.DrawCrosshairAtPos(posA, Color.Red, SceneManager.currentScene.camera.transformMatrix);
+            Trajectory.DrawCrosshairAtPos(posB, Color.LightGreen, SceneManager.currentScene.camera.transformMatrix);
 
             float distance = (posB - posA).Length();
             t.s = "" + "distance : " + distance;
 
             DrawCursorEveryPos(posB);
-            DrawNet(posA, posB);
+            //DrawNet(posA, posB);
 
             //DRAW REVERSE NEAREST PATH
             shapes.DrawLine(posB * new Vector2(1, -1),
@@ -122,11 +122,11 @@ namespace zzMathVisu.myProject._03_Earth2DPath
         {
             foreach(Vector2 outsidePos in GetAllOutsidePos(pos))
             {
-                Trajectory.DrawCrossHaitAtPos(outsidePos, Color.Black, SceneManager.currentScene.camera.transformMatrix);
+                Trajectory.DrawCrosshairAtPos(outsidePos, Color.Black, SceneManager.currentScene.camera.transformMatrix);
             }
         }
 
-        public static void DrawCrossHaitAtPos(Vector2 pos, Color color, Matrix matrix)
+        public static void DrawCrosshairAtPos(Vector2 pos, Color color, Matrix matrix)
         {
             Vector2 dimX = new Vector2(20, 4);
             Vector2 dimY = new Vector2(4, 20);

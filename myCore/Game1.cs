@@ -18,7 +18,7 @@ namespace zzMathVisu
         protected override void Initialize()
         {
             Engine.Initialize(this, graphics);
-            SceneManager.ChangeScene(typeof(Scene_SphereCoordinates));
+            SceneManager.ChangeScene(typeof(Scene_EarthGlobe));
 
             base.Initialize();
         }
